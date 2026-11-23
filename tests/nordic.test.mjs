@@ -1,0 +1,13 @@
+import fs from 'node:fs';import vm from 'node:vm';
+const canvasCtx = new Proxy({}, {get:(t,k)=>t[k]||(()=>null),set:(t,k,v)=>(t[k]=v,true)});
+const mocks=new Map();function el(id){if(!mocks.has(id)){const e={id,style:{setProperty(){},},classList:{add(){},remove(){},toggle(){},contains(){return false}},dataset:{},value:'normal',hidden:false,textContent:'',innerHTML:'',checked:false,addEventListener(){},querySelector(){return el('child')},getContext(){return canvasCtx},getBoundingClientRect(){return {left:0,top:0,width:480,height:288}},setPointerCapture(){},closest(){return null}};mocks.set(id,e)}return mocks.get(id)};
+const doc={body:el('body'),documentElement:el('html'),getElementById:el,querySelectorAll:()=>[],querySelector:()=>el('query'),addEventListener(){},createElement:()=>el('created')};
+const win={innerWidth:1280,innerHeight:720,devicePixelRatio:1,matchMedia:()=>({matches:false}),addEventListener(){},scrollTo(){}};
+class FakeImage {constructor(){this.complete=true;this.naturalWidth=448;this.naturalHeight=448;}set src(v){this._src=v;}get src(){return this._src;}}
+const sandbox={window:win,navigator:{maxTouchPoints:0,userAgent:'Desktop'},document:doc,Image:FakeImage,performance:{now:()=>1000},requestAnimationFrame(){},localStorage:{getItem(){return null},setItem(){}},YG_AUDIO:{play(){},syncMusic(){},setVolume(){}},console,Math,Date,Number,Map,Set,Array,JSON,parseInt,screen:{orientation:{}},location:{protocol:'https:',host:'test.workers.dev'},WebSocket:class{},setTimeout(){},clearTimeout(){}};
+vm.createContext(sandbox);const game=fs.readFileSync(new URL('../public/game.js', import.meta.url),'utf8');vm.runInContext(game,sandbox,{timeout:5000});
+function check(stage){const v=vm.runInContext(`player=createPlayer('loid');stage=${stage};testBossMode=false;spawnStage();({stage,phase,types:enemies.map(e=>e.type),theme:theme().name,arena:isNordic()?'nordic':'japan'})`,sandbox,{timeout:2000});console.log(stage,v);return v}
+let v21=check(21),v25=check(25),v20=check(20);
+if(!v21.types.some(x=>['draugr','frostwolf'].includes(x)))throw Error('No Nordic mobs');if(!v25.types.includes('frostjarl'))throw Error('No Nordic boss');if(!v20.types.includes('pecado'))throw Error('Existing Pecado missing');
+// Validate reward transition of the chapter is allowed at wave 20 but ends at 25.
+vm.runInContext("player=createPlayer('kris');player.hp=100000;player.maxHp=100000;stage=25;testBossMode=true;spawnStage();for(let i=0;i<500;i++)update(.016);console.log('jarl patterns',enemies.map(e=>({type:e.type,mode:e.mode,attack:e.attack,specialIndex:e.specialIndex,life:e.hp})));",sandbox,{timeout:15000});console.log('NORDIC GAME LOGIC PASS');

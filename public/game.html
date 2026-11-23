@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#100f1d">
+<title>Yggdrasil — As Sete Raízes | Online Cooperativo · v3.8</title>
+<style>
+:root{--ink:#11111f;--panel:#1b192a;--line:#554568;--gold:#eac58b;--pale:#f4e5d6;--muted:#afa3bb;--purple:#bd6eff;--red:#f56f87;--cyan:#6cdeff}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;color:var(--pale);background:#0b0b14;font-family:Georgia,'Times New Roman',serif}button{font:inherit;cursor:pointer}button:focus-visible,.hero-choice:focus-visible,.upgrade:focus-visible{outline:2px solid #fff;outline-offset:2px}
+body{background:radial-gradient(ellipse at 50% -30%,#39254d 0%,transparent 60%),radial-gradient(ellipse at 90% 80%,#1d233f 0%,transparent 46%),#090912;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:-1;opacity:.17;background-image:linear-gradient(90deg,transparent 97%,#8b7b97 100%),linear-gradient(transparent 97%,#8b7b97 100%);background-size:36px 36px;pointer-events:none}
+#shell{max-width:1120px;margin:0 auto;padding:12px 12px 24px}.mast{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:7px 4px 14px}.brand{display:flex;align-items:center;gap:14px}.sigil{width:55px;height:55px;border:1px solid #78618a;display:grid;place-items:center;background:#191424;box-shadow:inset 0 0 20px #42305066;position:relative;clip-path:polygon(15% 0,85% 0,100% 20%,100% 80%,85% 100%,15% 100%,0 80%,0 20%)}.sigil svg{width:37px;height:42px;fill:none;stroke:#d0a97b;stroke-width:2;stroke-linecap:round}.brand h1{font-size:clamp(23px,4.5vw,41px);margin:0;letter-spacing:.15em;line-height:1;text-shadow:0 3px 0 #241324;color:#f3d4b2}.brand p{margin:5px 0 0;color:#cbb6c9;text-transform:uppercase;font:10px/1.3 system-ui;letter-spacing:.26em}.toptools{display:flex;align-items:center;gap:10px}.smallbtn{background:linear-gradient(#30253e,#1b1828);border:1px solid #706084;color:#edddde;padding:10px 13px;letter-spacing:.09em;font:700 11px system-ui;text-transform:uppercase}.smallbtn:hover{border-color:#d6a575}.version{font:10px system-ui;color:#99879f;letter-spacing:.12em}
+.frame{position:relative;border:3px solid #92799a;box-shadow:0 0 0 1px #36263e,0 13px 46px #000b,inset 0 0 0 2px #1b132a;overflow:hidden;background:#11111c}.frame:after{content:"";pointer-events:none;position:absolute;inset:7px;border:1px solid #78618049;z-index:7}.scene{position:relative;width:100%;aspect-ratio: 5/3;max-height:calc(100vh - 180px);min-height:300px}#game{display:block;width:100%;height:100%;object-fit:fill;image-rendering:pixelated;touch-action:none;cursor:crosshair}
+.hud{position:absolute;z-index:2;top:14px;left:16px;right:16px;display:flex;justify-content:space-between;gap:9px;pointer-events:none;font-family:system-ui}.statpanel{background:#11101fce;border:1px solid #745673c9;padding:9px 12px;min-width:185px;box-shadow:0 5px 20px #0005;backdrop-filter:blur(3px)}.pname{font-size:11px;font-weight:900;letter-spacing:.11em;color:#f6ddc5;margin-bottom:5px}.bar{position:relative;height:11px;margin-top:5px;border:1px solid #80717e;background:#0b0b16}.fill{height:100%;transition:width .18s}.hp{background:linear-gradient(90deg,#971e46,#fc6984)}.power{background:linear-gradient(90deg,#4a46a4,#8b8fff)}.barnum{position:absolute;inset:0;text-align:center;font:bold 8px/9px system-ui;text-shadow:1px 1px #000}.wavepanel{text-align:right;min-width:145px}.wavepanel .stage{font-weight:900;font-size:12px;color:var(--gold);letter-spacing:.11em}.wavepanel .sub{font-size:10px;letter-spacing:.08em;color:#e6cfcb;margin-top:4px}.wavepanel .score{font-size:10px;color:#c3b7cb;margin-top:5px}
+.overlay{position:absolute;inset:0;z-index:10;background:linear-gradient(#0c0a17e8,#0c0915ef);display:flex;align-items:center;justify-content:center;padding:16px;overflow:auto}.overlay.hidden{display:none}.overlay-card{width:min(100%,840px);text-align:center}.eyebrow{font:bold 10px system-ui;letter-spacing:.32em;color:#b7a3b7;text-transform:uppercase}.overlay h2{margin:6px 0 5px;color:#f5d4aa;text-shadow:0 3px 0 #3a223e;font-size:clamp(25px,4vw,43px);letter-spacing:.09em}.overlay .intro{color:#cfbbce;font:12px/1.6 system-ui;margin:0 auto 17px;max-width:570px}.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:645px;margin:0 auto}.hero-choice{min-height:220px;background:linear-gradient(#271d32,#14121e);border:2px solid #79586e;color:var(--pale);padding:12px;position:relative;box-shadow:inset 0 0 0 4px #1b1424,0 8px 18px #0007;transition:transform .18s,border-color .18s}.hero-choice:hover{transform:translateY(-5px);border-color:#f5bf99}.hero-choice.kris{border-color:#565e9f;background:linear-gradient(#1b1d39,#12131f)}.hero-choice.kris:hover{border-color:#73cefc}.hero-choice canvas{width:110px;height:115px;image-rendering:pixelated;display:block;margin:0 auto 4px}.hero-choice strong{display:block;font-size:22px;letter-spacing:.15em;color:#eed3c3}.hero-choice.kris strong{color:#9cdeff}.hero-choice span{display:block;color:#c4b3c4;font:11px/1.5 system-ui;margin-top:5px}.hero-choice .weapon{color:#f5c58d;font-weight:700}.panelnote{font:11px/1.7 system-ui;color:#a996b2;margin-top:18px}.accent{color:#f5bc86}
+.reward-panel{width:min(100%,870px)}.reward-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;margin-top:21px}.upgrade{text-align:left;position:relative;min-height:230px;padding:14px 13px;background:linear-gradient(150deg,#2e2439,#171524 64%);border:2px solid #a584c3;color:#fff;box-shadow:inset 0 0 0 3px #1c1828,0 9px 22px #0008;transition:transform .15s,filter .15s}.upgrade:hover{transform:translateY(-8px);filter:brightness(1.15)}.upgrade.common{--rarity:#81c9ef;border-color:#81c9ef}.upgrade.rare{--rarity:#ba83fe;border-color:#ba83fe}.upgrade.legendary{--rarity:#efbf66;border-color:#efbf66;background:linear-gradient(145deg,#4f3528,#181524 68%)}.upgrade:before,.upgrade:after{content:'◆';color:var(--rarity);font-size:12px;position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:#181322;padding:2px 7px}.upgrade .num{position:absolute;right:8px;top:8px;font:10px system-ui;color:#bca9c5}.upgrade .iconbox{height:84px;border:1px solid #ffffff21;display:grid;place-items:center;background:radial-gradient(circle,#54376b55,#100b19 75%);margin-bottom:12px}.upgrade .ico{font-size:51px;line-height:1;color:var(--rarity);text-shadow:0 0 17px var(--rarity)}.upgrade strong{font-size:17px;color:#f1e4dc;display:block;line-height:1.1}.upgrade .rar{display:block;font:900 9px system-ui;letter-spacing:.2em;color:var(--rarity);margin:9px 0}.upgrade .desc{font:11px/1.5 system-ui;color:#d0c2d0}.restart-btn{padding:12px 20px;background:linear-gradient(110deg,#674157,#382642);color:#fff;border:1px solid #e2a9be;font-weight:700;margin-top:12px}
+.bottom{padding:12px 4px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}.instructions{font:11px/1.8 system-ui;color:#baa9c3}.key{font:700 10px/1.2 system-ui;padding:3px 5px;border:1px solid #665671;background:#211a30;color:#f0d4d5;box-shadow:0 2px #0c0a14}.tip{color:#8f7f9a;font:11px/1.7 system-ui;text-align:right}.mobile-controls{display:none;position:absolute;z-index:4;bottom:14px;left:16px;right:16px;pointer-events:none;align-items:flex-end;justify-content:space-between}.joystick{height:112px;width:112px;border:2px solid #e5c8ed77;border-radius:100%;background:#1813296b;position:relative;pointer-events:auto;touch-action:none}.joystick:before,.joystick:after{content:"";position:absolute;background:#d0bdcf40;left:50%;top:50%;transform:translate(-50%,-50%)}.joystick:before{height:55%;width:1px}.joystick:after{width:55%;height:1px}.knob{position:absolute;width:47px;height:47px;border-radius:100%;background:#9992c48c;border:2px solid #e0c9f0ba;left:50%;top:50%;transform:translate(-50%,-50%);box-shadow:0 3px 16px #0008}.actions{display:flex;gap:7px;align-items:flex-end;pointer-events:auto}.action{border-radius:50%;border:2px solid #ddc6e2bb;background:#2a1b43cb;color:white;min-width:57px;min-height:57px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:23px;touch-action:none;user-select:none}.action b{font:800 9px system-ui;letter-spacing:.06em}.action.attack{width:76px;height:76px;background:#6c253cc7;border-color:#ff9a9d}.action:active{transform:scale(.92);filter:brightness(1.4)}.action.cool{opacity:.5}
+@media (pointer:coarse),(max-width:700px){.mobile-controls{display:flex}.scene{max-height:none;min-height:380px;height:clamp(380px,95vw,520px);aspect-ratio:auto}#game{position:absolute;top:0;left:0;width:100%;height:auto;aspect-ratio:5/3}.toptools .version{display:none}.hud{top:10px;left:10px;right:10px}.statpanel{min-width:130px;padding:6px}.wavepanel{min-width:115px}.wavepanel .stage{font-size:10px}.instructions{display:none}.tip{text-align:left}.overlay{padding:10px}.hero-grid{gap:9px}.hero-choice{padding:7px;min-height:186px}.hero-choice canvas{height:90px;width:90px}.hero-choice strong{font-size:17px}.hero-choice span{font-size:10px}.reward-grid{gap:6px;margin-top:12px}.upgrade{min-height:199px;padding:8px 6px}.upgrade .iconbox{height:63px}.upgrade .ico{font-size:40px}.upgrade strong{font-size:13px}.upgrade .desc{font-size:10px}.overlay .intro{font-size:11px;margin-bottom:9px}.overlay h2{font-size:23px}.brand h1{font-size:23px}.sigil{width:43px;height:43px}.mast{padding:3px 0 10px}.panelnote{margin-top:8px;font-size:9px}}
+@media(max-width:390px){.hero-choice span{font-size:9px}.upgrade .iconbox{height:49px}.upgrade{min-height:178px}.upgrade .ico{font-size:32px}.upgrade .desc{font-size:9px}.joystick{width:98px;height:98px}.action{min-width:49px;min-height:49px}.action.attack{width:67px;height:67px}}
+
+/* Yggdrasil v0.2 artwork pass: display pixel-art resources at readable scale */
+:root{--ink:#0b0a13;--panel:#191326;--line:#764b82;--gold:#f4c68a;--pale:#f6e6e3;--muted:#b8a3c4;--purple:#c283ff;--red:#f56b85;--cyan:#7db8ff}
+body{background: radial-gradient(ellipse at 50% -10%,#472048 0%,transparent 55%),radial-gradient(ellipse at 90% 80%,#182d4f 0%,transparent 55%),#090813}
+#shell{max-width:1210px;padding-top:8px}.brand h1{background:linear-gradient(#ffe7c1,#f0bba2);background-clip:text;color:transparent;text-shadow:none}
+.frame{border-color:#b588aa;box-shadow:0 0 0 2px #341b36,0 20px 65px #000b,inset 0 0 0 2px #211429}
+.scene{aspect-ratio:5/3;max-height:none;min-height:420px}#game{image-rendering:pixelated}
+.overlay{background:radial-gradient(ellipse at 50% 20%,#20152de6,#0a0815f6 85%)}
+.overlay h2{color:#ffe1bc;text-shadow:0 3px #4b2638;letter-spacing:.10em}
+.hero-choice{background: radial-gradient(circle at 50% 15%,#43233d,#18121f 70%);border:2px solid #bf7291;min-height:246px}
+.hero-choice.kris{background:radial-gradient(circle at 50% 15%,#20375f,#111324 70%);border-color:#5378c9}
+.hero-choice canvas{width:118px;height:118px;border:1px solid #aa79977a;box-shadow:0 0 25px #a0497b33;margin-bottom:9px}
+.hero-choice.kris canvas{border-color:#668acd;box-shadow:0 0 25px #487ad94a}
+.hero-choice strong{font-size:25px}.hero-choice span.weapon{color:#e8bb9c}
+.reward-panel{max-width:910px}.reward-grid{gap:18px;margin-top:19px}
+.upgrade{min-height:262px;padding:15px 15px 13px;background:linear-gradient(#241729,#110f1e);border-width:3px;border-radius:6px;box-shadow:inset 0 0 0 2px #24192e,0 9px 30px #000b}
+.upgrade .iconbox{height:120px;position:relative;background:radial-gradient(ellipse,#472c5655,#0f0d1b 75%);overflow:hidden;margin-bottom:11px;border:1px solid #ffffff26}
+.upgrade .iconbox:after{content:'✧';position:absolute;color:var(--rarity);right:8px;top:4px;font-size:15px}
+.upgrade .card-art{width:109px;height:109px;object-fit:contain;image-rendering:pixelated;filter:drop-shadow(0 0 12px #a270ed55)}
+.upgrade strong{font-size:19px}.upgrade .desc{font-size:12px}.upgrade.legendary{background:linear-gradient(#392425,#15111e)}
+.statpanel{background:#0e0c1bd9;border:1px solid #9d7199;backdrop-filter:blur(4px)}
+@media(pointer:coarse),(max-width:700px){
+ .mast{padding-bottom:8px}.scene{height: min(138vw,610px);min-height:420px;aspect-ratio:auto}
+ #game{width:100%;height:auto;aspect-ratio:5/3;object-fit:fill}
+ .mobile-controls{bottom:12px}.hero-choice{min-height:210px}.hero-choice canvas{width:96px;height:96px}
+ .reward-grid{gap:7px;margin-top:13px}.upgrade{min-height:224px;padding:9px 6px;border-width:2px}
+ .upgrade .iconbox{height:82px}.upgrade .card-art{width:78px;height:78px}
+ .upgrade strong{font-size:14px;min-height:30px}.upgrade .desc{font-size:10px;line-height:1.3}
+ .overlay{align-items:flex-start;padding-top:16px}.overlay-card{margin:auto}
+ .reward-panel{margin:0 auto}.brand h1{font-size:24px}.version{display:none}
+}
+@media(max-width:390px){.upgrade .iconbox{height:69px}.upgrade .card-art{height:67px;width:67px}.upgrade strong{font-size:12px}.upgrade{min-height:212px}}
+
+.boss-test{margin:11px auto 0;padding:12px 16px;max-width:645px;background:linear-gradient(90deg,#271622e8,#171529eb);border:1px solid #a16673}
+.boss-test>span{display:block;color:#f6caa2;font:900 11px/1.4 system-ui;letter-spacing:.13em;margin-bottom:9px}
+.boss-buttons{display:flex;justify-content:center;gap:9px}.boss-buttons button{padding:11px 13px;background:#42233a;border:1px solid #e3a4ad;color:#fff;font:800 11px system-ui;letter-spacing:.07em}.boss-buttons button:hover{background:#713047}
+.boss-test small{display:block;font:10px/1.4 system-ui;margin-top:8px;color:#c6acc1}
+@media (max-width:700px){.boss-test{padding:7px;margin-top:5px}.boss-buttons button{padding:8px 10px;font-size:10px}.boss-test>span{font-size:9px;margin-bottom:4px}.boss-test small{font-size:9px}}
+
+/* v0.5 — character portraits, large-map camera and mobile canvas fill */
+.hero-choice .hero-portrait{display:block;width:170px;height:138px;max-width:100%;margin:0 auto 8px;object-fit:cover;object-position:center 33%;border:2px solid #b77b8d;box-shadow:0 0 26px #a0497b55;border-radius:5px}
+.hero-choice.kris .hero-portrait{border-color:#6e91e2;box-shadow:0 0 27px #4a77db66}
+.hero-choice strong{display:block;font-size:26px;color:#f6d5b1;letter-spacing:.12em}
+.hero-choice{min-height:282px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.scene{aspect-ratio:5/3}#game{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;aspect-ratio:auto}
+@media(pointer:coarse),(max-width:700px){.scene{height:min(155vw,660px);min-height:420px;aspect-ratio:auto}#game{width:100%;height:100%;aspect-ratio:auto;object-fit:fill}.hero-choice .hero-portrait{width:130px;height:106px}.hero-choice{min-height:236px}.scene{height:auto;min-height:0;max-height:none;aspect-ratio:2/3}}
+@media(max-width:390px){.hero-choice .hero-portrait{width:120px;height:100px}.hero-choice strong{font-size:21px}}
+
+/* v0.5: original Yggdrasil title art and improved pixel-illustrated character selection */
+html:not(.touch-ui) .mobile-controls,body:not(.touch-ui) .mobile-controls {display:none!important}
+body.touch-ui .mobile-controls:not([style*="none"]){display:flex!important}
+#game{image-rendering:auto!important}
+.splash{background:linear-gradient(180deg,rgba(4,3,11,.05) 0%,rgba(5,4,14,.1) 36%,rgba(6,4,16,.65) 75%,rgba(6,4,16,.86) 100%),url('assets/ui/title.webp') center center/cover no-repeat;align-items:flex-end;}
+.splash:before{content:'';position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 85px 14px #06031488}
+.splash-actions{z-index:1;display:flex;flex-direction:column;align-items:center;gap:7px;margin-bottom:clamp(5px,4vh,33px);width:min(340px,90%)}
+.splash-kicker{letter-spacing:.32em;font:700 10px system-ui;color:#ffe1d8;text-shadow:0 2px 9px #000}
+.splash-btn{width:100%;background:linear-gradient(90deg,#2d1928ea,#532b44ee,#281626ef);border:1px solid #daabb4;box-shadow:inset 0 0 0 2px #120d1db8,0 3px 8px #05020a8c;color:#fdf2e8;letter-spacing:.14em;font:800 12px system-ui;padding:10px 14px;transition:filter .2s,transform .2s}
+.splash-btn:hover{filter:brightness(1.32);transform:translateY(-2px)}.splash-btn.secondary{border-color:#7d78b2;background:linear-gradient(90deg,#222037e8,#362f56e9,#1a182eeb)}.splash-btn.boss-btn{border-color:#f28ca1;background:linear-gradient(90deg,#4d1534e9,#77233bed,#4d1534e9)}
+.splash-actions small{font:9px system-ui;color:#f1d4d9c4;letter-spacing:.12em}
+.select-screen{background:linear-gradient(90deg,#080912e0,#0c0b1bd5),url('assets/ui/selection_back.webp') center/cover no-repeat}
+.select-screen .overlay-card{background:#0a0915ae;border:1px solid #73537a99;padding:12px 18px;border-radius:6px;backdrop-filter:blur(2px)}
+.hero-grid{max-width:730px}.hero-choice{min-height:276px;padding:9px 11px 10px;background:#1d1024ea!important}.hero-choice.kris{background:#10152ae9!important}
+.hero-choice .hero-portrait{display:block;width:min(100%,275px)!important;height:194px!important;object-fit:cover;object-position:center 33%;image-rendering:auto;border-radius:3px;margin:0 auto 6px}
+.hero-choice strong{font-size:23px;letter-spacing:.20em}.hero-choice .weapon{font-size:10px!important;letter-spacing:.06em}
+.ult-bar{margin-top:7px}.ultimate-fill{background:linear-gradient(90deg,#7c5199,#cf88ff,#f2d6fa)}
+.ultimate-action{background:#362354eb!important;border-color:#d7a6ff!important;min-width:61px}
+.ultimate-action b{color:#f0dcff}.supreme-screen{z-index:13;background:radial-gradient(ellipse at center,#181024f7,#050410fb)}
+.supreme-panel{max-width:680px}.supreme-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px auto 8px}
+.supreme-choice{display:flex;min-height:122px;align-items:center;flex-direction:column;gap:5px;justify-content:center;cursor:pointer;padding:12px;color:#f8e6f6;background:linear-gradient(150deg,#21182e,#10101b);border:2px solid #8667a5;transition:transform .15s,border-color .15s,filter .15s}
+.supreme-choice:hover{border-color:#efd0ff;transform:translateY(-3px);filter:brightness(1.15)}.supreme-choice.fight{border-color:#df738b}.supreme-choice.defense{border-color:#6abff0}.supreme-choice.items{border-color:#bf88ff}.supreme-choice.mercy{border-color:#81d0a6}
+.supreme-icon{font-size:28px;line-height:1.1;color:#d6b6ff;text-shadow:0 0 13px #8959b9}.supreme-choice strong{font:bold 16px Georgia;letter-spacing:.09em}.supreme-choice>span:last-child{font:11px/1.4 system-ui;color:#dccde6}
+body:not(.touch-ui) .scene{max-height:none!important}
+@media(pointer:coarse),(max-width:700px){
+ .splash{background-position:center center}.splash-actions{margin-bottom:10px;gap:5px}.splash-btn{padding:9px 12px;font-size:10px}
+ .select-screen .overlay-card{padding:9px 7px}.hero-choice{min-height:203px;padding:5px!important}.hero-choice .hero-portrait{height:128px!important;width:100%!important}
+ .hero-choice strong{font-size:19px}.hero-choice .weapon{font-size:8px!important}.hero-grid{gap:6px}.supreme-grid{gap:6px}.supreme-choice{min-height:114px;padding:8px 5px}.supreme-choice strong{font-size:13px}.supreme-choice>span:last-child{font-size:9px}
+ .actions{gap:4px}.action{min-width:49px;min-height:49px;font-size:18px}.action.attack{width:67px;height:67px}.ultimate-action{min-width:51px}.action b{font-size:8px}
+}
+@media(max-width:375px){.action{min-width:43px;min-height:43px}.action.attack{width:61px;height:61px}.ultimate-action{min-width:46px}.hero-choice .hero-portrait{height:105px!important}}
+
+/* v0.9: compact ability-cooldown HUD; no change to character textures or motion */
+.cooldown-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;margin-top:8px}
+.cooldown-slot{--readiness:0%;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;min-height:42px;background:#100d1ddc;border:1px solid #765879;overflow:hidden}
+.cooldown-slot::before{content:'';position:absolute;inset:auto 0 0;height:3px;background:#9763d2;width:var(--readiness);transition:width .12s}
+.cooldown-slot .ability-key{font:bold 9px/1 system-ui;color:#e5c8f5}
+.cooldown-slot strong{font:bold 11px/1.2 system-ui;color:#fff3e8;font-variant-numeric:tabular-nums}
+.cooldown-slot small{font:bold 8px/1 system-ui;letter-spacing:.08em;color:#bb9fc9}
+.action{position:relative;overflow:hidden}
+.action.cool::after{content:attr(data-timer);position:absolute;inset:0;display:grid;place-items:center;font:900 12px/1 system-ui;font-variant-numeric:tabular-nums;background:#080b17c9;color:#fff;text-shadow:0 1px 3px #000;pointer-events:none}
+@media (pointer:coarse),(max-width:700px){.cooldown-strip{gap:3px;margin-top:5px}.cooldown-slot{min-height:34px}.cooldown-slot .ability-key{font-size:8px}.cooldown-slot strong{font-size:9px}.cooldown-slot small{font-size:7px}}
+
+/* v0.9: compact volume controls; UI design and game art otherwise preserved */
+.toptools{display:flex;align-items:center;justify-content:flex-end;gap:9px;flex-wrap:wrap}
+.audio-tools{display:flex;gap:6px;align-items:center;padding:3px 5px;border:1px solid #6b507c;border-radius:5px;background:#150f24de}
+.audio-tools .smallbtn{white-space:nowrap;font:700 10px system-ui,sans-serif;letter-spacing:.04em}
+#audioVolume{width:88px;accent-color:#bc79e5;cursor:pointer;touch-action:auto}
+#audioStatus{color:#f5dde2c9!important}
+@media(max-width:660px){.toptools{justify-content:center;gap:4px}.audio-tools{gap:4px;padding:3px}.audio-tools .smallbtn{font-size:9px;padding:6px 5px}#audioVolume{width:57px}.toptools .version{display:none}.mast{display:flex;flex-direction:column;align-items:center;gap:5px}.mast .brand{display:flex;justify-content:center;width:100%}.mast .brand h1{font-size:21px}.mast .brand p{font-size:8px}.toptools{width:100%;max-width:100%;min-width:0;justify-content:center}.audio-tools{max-width:100%}.toptools>#restart{padding:6px 8px;font-size:9px}}
+
+/* v0.9 — Pecador difficulty selection, preserves current illustrations / interface */
+.mode-buttons{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:7px 0 11px}
+.mode-buttons button{cursor:pointer;color:#f4d8dc;background:#1a1123d9;border:1px solid #75455f;border-radius:5px;padding:9px 14px;font:700 11px/1.2 system-ui;letter-spacing:.06em;box-shadow:0 2px 15px #0b0617a8}
+.mode-buttons button.selected{border-color:#eebd8c;background:linear-gradient(160deg,#5a1839ee,#311322f2);color:#ffe8cc;box-shadow:0 0 13px #d84b777a}
+.mode-buttons button[data-mode=pecador].selected{border-color:#ff4d69;background:linear-gradient(160deg,#771a30,#2d0918);box-shadow:0 0 16px #ff255e77}
+.mode-select{margin:3px auto 8px}
+.boss-test .boss-buttons{margin-top:7px}
+.splash-actions{max-height:95%;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#7a3759 transparent}
+.splash-actions .splash-btn{padding:8px 16px}
+@media(max-width:700px){.mode-buttons button{padding:7px 10px;font-size:10px}.splash-actions .splash-btn{font-size:10px;padding:7px 9px}.boss-test .boss-buttons button{font-size:9px}}
+
+/* v0.9, Tsukuomi / extra elite waves */
+.moon-btn{border-color:#ba86e6!important;background:linear-gradient(100deg,#45295d,#21172e)!important}
+.tsukuomi-teaser{display:flex;align-items:center;gap:11px;max-width:470px;margin:10px auto;padding:7px 10px;background:linear-gradient(90deg,#301936cc,#17152a);border:1px solid #715582;text-align:left}
+.tsukuomi-teaser img{height:57px;width:57px;object-fit:cover;border-radius:4px;filter:contrast(1.1)}
+.tsukuomi-teaser strong{display:block;color:#e6c4ff;letter-spacing:.07em;font-size:12px}
+.tsukuomi-teaser small{display:block;color:#bbaac8;font:10px/1.5 system-ui;margin:4px 0}
+@media(max-width:700px){.tsukuomi-teaser img{height:43px;width:43px}.tsukuomi-teaser{padding:4px 6px;gap:7px}.tsukuomi-teaser strong{font-size:10px}.tsukuomi-teaser small{font-size:9px}}
+
+.pecado-btn{border-color:#a92941!important;background:linear-gradient(#520c21,#21040d)!important;color:#ffd5d5!important}
+#titleScreen .splash-actions{max-height:92%;overflow-y:auto;scrollbar-width:thin}
+@media(max-height:680px){.splash-btn{padding:7px 12px!important}.splash-actions{gap:6px!important}}
+
+/* Yggdrasil v1.1 — five mobile actions and adaptive landscape renderer */
+.cooldown-strip{grid-template-columns:repeat(4,minmax(0,1fr));gap:3px}
+.secondary-action{background:#39224fdd!important;border-color:#a8b2ff!important}
+.pecado-teaser{display:flex;max-width:470px;align-items:center;gap:9px;margin:7px auto;padding:6px 9px;background:linear-gradient(90deg,#3f0b18cc,#180a13);border:1px solid #a12a49;text-align:left}
+.pecado-teaser img{height:53px;width:62px;object-fit:cover;object-position:center 33%}
+.pecado-teaser strong{display:block;font:700 12px Georgia;color:#ffbec0}
+.pecado-teaser small{display:block;color:#e2acb2;font:10px/1.5 system-ui}
+@media(pointer:coarse){.actions{gap:3px}.action{min-width:45px;min-height:45px;font-size:17px}.action.attack{width:66px;height:66px}.action b{font-size:7px}.mobile-controls{left:10px;right:10px}.joystick{height:102px;width:102px}}
+@media(pointer:coarse) and (orientation:landscape){
+ html,body{height:100%;overflow:hidden}
+ #shell{max-width:none;width:100%;padding:0}
+ body.is-playing .mast,body.is-playing .bottom{display:none!important}
+ .mast{padding:2px 8px 4px}.brand h1{font-size:17px}.sigil{height:28px;width:28px}.brand p{display:none}
+ .scene{height:calc(100dvh - 54px);aspect-ratio:auto!important;min-height:0;max-height:none}
+ body.is-playing .scene{height:100dvh!important;min-height:0!important;max-height:none!important;width:100vw!important;aspect-ratio:auto!important}
+ .frame{border-width:1px}.frame:after{inset:3px}
+ #game{width:100%!important;height:100%!important;aspect-ratio:auto!important}
+ .hud{top:5px;left:8px;right:8px;gap:5px}
+ .statpanel{min-width:0;width:182px;max-width:36vw;padding:5px 7px}
+ .wavepanel{width:145px;max-width:27vw}.wavepanel .stage{font-size:9px}.wavepanel .sub,.wavepanel .score{font-size:8px}
+ .bar{height:9px;margin-top:3px}.pname{font-size:9px;margin-bottom:3px}.cooldown-strip{margin-top:4px;gap:2px}
+ .cooldown-slot{min-height:27px}.cooldown-slot .ability-key{font-size:7px}.cooldown-slot strong{font-size:8px}.cooldown-slot small{font-size:6px}
+ .mobile-controls{bottom:calc(4px + env(safe-area-inset-bottom));left:calc(10px + env(safe-area-inset-left));right:calc(10px + env(safe-area-inset-right));align-items:flex-end}
+ .joystick{width:min(23vh,90px);height:min(23vh,90px)}.knob{height:35px;width:35px}
+ .actions{display:grid;grid-template-columns:repeat(3,47px);grid-template-rows:repeat(2,47px);gap:3px;align-items:center;justify-items:center}
+ .action,.ultimate-action{min-width:44px;min-height:44px;width:44px;height:44px;font-size:17px;padding:0}
+ .action b{font-size:6.5px;letter-spacing:0}.action.attack{width:56px;height:56px;grid-row:1/3;grid-column:3;align-self:center;font-size:19px}
+ #btnDash{grid-column:1;grid-row:2}#btnSkill{grid-column:1;grid-row:1}#btnSecondary{grid-column:2;grid-row:1}#btnUltimate{grid-column:2;grid-row:2}
+ .overlay{padding:4px;align-items:center;overflow:auto}.overlay-card{max-height:100%;overflow:auto;padding:6px}
+ .overlay h2{font-size:18px}.overlay .intro{font-size:9px;margin-bottom:5px}.eyebrow{font-size:8px}
+ .reward-grid{gap:7px;margin-top:7px}.upgrade{min-height:0;padding:4px 6px}.upgrade .iconbox{height:55px;margin-bottom:4px}.upgrade .card-art{width:52px;height:52px}
+ .upgrade strong{font-size:12px;min-height:0}.upgrade .rar{margin:3px 0}.upgrade .desc{font-size:9px;line-height:1.2}
+ .supreme-grid{gap:5px;margin:5px auto}.supreme-choice{min-height:70px;padding:4px}.supreme-icon{font-size:16px}.supreme-choice strong{font-size:11px}
+ .select-screen .hero-grid{max-width:520px}.hero-choice{min-height:0}.hero-choice .hero-portrait{height:75px!important;width:115px!important}.hero-choice strong{font-size:14px}.hero-choice .weapon{font-size:7px!important}
+ .boss-test{padding:4px}.boss-buttons button{padding:5px}.tsukuomi-teaser,.pecado-teaser{display:none}.panelnote{font-size:8px;margin-top:4px}
+ .splash-actions{width:min(95%,320px);max-height:96%;gap:2px!important}.splash-btn{padding:3px!important;font-size:9px!important}.splash-kicker{display:none}.splash-actions small{display:none}.mode-buttons button{padding:4px}
+}
+@media(pointer:coarse) and (orientation:portrait){
+ .scene{aspect-ratio:2/3!important;height:auto!important;min-height:0!important;max-height:none!important}
+ #game{width:100%!important;height:100%!important;object-fit:fill!important}
+ .mobile-controls{left:7px;right:7px}.joystick{width:92px;height:92px}
+ .actions{gap:3px}.action{min-width:43px;min-height:43px;font-size:16px}.action.attack{width:60px;height:60px}.action b{font-size:7px}
+ .cooldown-slot strong{font-size:8px}
+}
+
+/* Yggdrasil v1.3 — Cross + separate boss chooser, compact 3-card roster */
+.select-screen .hero-grid{grid-template-columns:repeat(3,minmax(0,1fr));max-width:790px;gap:12px}
+.hero-choice.cross{background:linear-gradient(#291a3a,#110e19)!important;border-color:#ad71e8}
+.hero-choice.cross strong{color:#d6abff}.hero-choice.cross .hero-portrait{border-color:#b07bff}
+.hero-choice .hero-portrait{width:100%!important;max-width:205px;height:174px!important}
+.hero-choice{min-height:238px!important}
+.select-screen .overlay-card{max-width:870px}
+.selection-back{background:#2a2037;border:1px solid #a382bc;color:#f2e6ff;padding:9px 17px;margin-top:15px;font:700 11px system-ui;letter-spacing:.12em}
+.boss-screen{background:radial-gradient(circle at top,#26122fcf,#070712f5 80%),url('assets/ui/selection_back.webp') center/cover no-repeat}
+.boss-panel{max-width:820px}.boss-grid-new{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:19px auto}
+.boss-tile{color:#f6e4e6;background:linear-gradient(#261b30,#100f1c);border:2px solid #865d8d;padding:10px;display:flex;flex-direction:column;align-items:center;gap:7px;transition:transform .13s,filter .13s}
+.boss-tile:hover{transform:translateY(-4px);filter:brightness(1.2)}.boss-tile img{width:100%;height:126px;object-fit:contain;image-rendering:auto}
+.boss-tile strong{font:800 13px Georgia;color:#f6d8be}.boss-tile span{font:800 10px system-ui;color:#a9a1e4;letter-spacing:.14em}
+.card-power{background:#312046d9!important;border-color:#ead6ff!important;position:absolute;bottom:91px;right:89px;min-width:49px;min-height:49px;width:54px;height:54px;font-size:17px;box-shadow:0 0 14px #dd9cff77}
+.actions{position:relative}.card-power.cool{opacity:.45}
+@media(max-width:700px){.hero-choice .hero-portrait{height:117px!important}.hero-choice{min-height:174px!important;padding:6px 4px!important}.hero-grid{gap:5px!important}.hero-choice strong{font-size:16px!important}.hero-choice .weapon{font-size:8px!important}.select-screen .overlay-card{padding:10px 6px}.boss-grid-new{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.boss-tile img{height:95px}.card-power{bottom:75px;right:80px;width:43px;height:43px;min-width:43px;min-height:43px}}
+@media(pointer:coarse) and (orientation:landscape){.select-screen .hero-choice .hero-portrait{height:84px!important;width:110px!important}.select-screen .hero-choice{min-height:110px!important}.boss-grid-new{grid-template-columns:repeat(4,minmax(0,1fr));margin:7px auto}.boss-tile{gap:2px;padding:3px}.boss-tile img{height:68px}.boss-tile strong{font-size:10px}.boss-tile span{font-size:8px}.card-power{position:absolute!important;bottom:98px;right:61px;width:39px;height:39px;min-width:39px;min-height:39px;font-size:15px}.card-power b{font-size:6px}}
+
+.coop-panel{max-width:680px}.coop-heroes{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:9px auto;max-width:580px}.coop-heroes button{padding:7px;background:#21172b;color:#e8d6f3;border:2px solid #664873}.coop-heroes button.selected{border-color:#76d4ff;background:#293459;box-shadow:0 0 15px #46bbff55}.coop-heroes img{display:block;width:100%;height:112px;object-fit:cover;object-position:50% 25%;margin-bottom:4px}.coop-heroes b{font:700 12px system-ui;letter-spacing:.15em}.coop-code{font:13px system-ui;padding:10px;border:1px solid #4d5274;margin:10px auto;max-width:350px}.coop-code strong{font-size:21px;letter-spacing:.2em;color:#a5dcff}.coop-code button{font:10px system-ui;background:#332a49;color:#fff;border:1px solid #7b649c;padding:5px}.coop-panel select{padding:9px;margin:10px;color:#fff;background:#1d1b2b;border:1px solid #8e719d}.coop-panel button:disabled{opacity:.5}.coop-panel [hidden]{display:none!important}
+@media(orientation:landscape) and (max-height:570px){.coop-heroes img{height:75px}.coop-panel .intro{margin:5px auto}.coop-panel h2{font-size:20px}.coop-panel .restart-btn{margin:5px}}
+
+/* Correct mobile portrait aspect ratio, retain original images and sprites. */
+body.touch-ui:not(.landscape) .scene{width:100%;height:auto!important;aspect-ratio:2/3;max-height:none!important;min-height:0!important}
+body.touch-ui .scene #game{width:100%!important;height:100%!important;inset:0;object-fit:fill}
+@media(max-width:700px){#performanceMeter{font-size:8px!important}}
+
+/* v1.8: mobile control spacing and user-scalable button hit targets */
+:root{--control-zoom:1}
+body.touch-ui .joystick{transform:scale(var(--control-zoom));transform-origin:bottom left}
+body.touch-ui .action{transform:scale(var(--control-zoom));transform-origin:center}
+body.touch-ui .mobile-controls{pointer-events:none}
+body.touch-ui .mobile-controls .actions,body.touch-ui .mobile-controls button,body.touch-ui .mobile-controls .joystick{pointer-events:auto}
+body.touch-ui #btnAttack.aim-stick{border:3px solid #89dcff;box-shadow:0 0 16px #68cdff80;touch-action:none}
+@media(pointer:coarse) and (orientation:portrait){
+  body.touch-ui .actions{display:grid!important;grid-template-columns:repeat(3, minmax(0,1fr));grid-template-rows:repeat(2, 52px);gap:9px!important;width:174px;align-items:center;justify-items:center}
+  body.touch-ui #btnSkill{grid-column:1;grid-row:1}body.touch-ui #btnSecondary{grid-column:2;grid-row:1}
+  body.touch-ui #btnUltimate{grid-column:3;grid-row:1}body.touch-ui #btnDash{grid-column:1;grid-row:2}
+  body.touch-ui #btnAttack{grid-column:2 / span 2;grid-row:2;justify-self:end}
+  body.touch-ui .mobile-controls{bottom:13px!important;left:8px!important;right:8px!important;align-items:end!important}
+  body.touch-ui .joystick{margin-bottom:6px!important}
+  body.touch-ui .card-power{bottom:116px!important;right:50px!important}
+}
+/* v2.2: unobtrusive fallen-player banner so the map remains playable. */
+.overlay.fallen-toast{inset:75px auto auto 50%;transform:translateX(-50%);width:max-content;max-width:calc(100% - 22px);height:auto;padding:0;background:transparent;overflow:visible;pointer-events:none;align-items:initial;justify-content:initial;z-index:8}
+.fallen-note{display:flex;flex-direction:column;gap:3px;align-items:center;text-align:center;padding:7px 13px;background:#11172cdb;border:1px solid #84cdeb;border-radius:7px;box-shadow:0 3px 15px #0009;font:10px/1.3 system-ui;color:#d9f4ff}
+.fallen-note strong{font-size:11px;letter-spacing:.12em;color:#a9f0ff}
+@media(pointer:coarse),(max-width:700px){.overlay.fallen-toast{top:62px}.fallen-note{padding:5px 8px;font-size:9px;max-width:240px}}
+/* v2.3 — online difficulty selector and visible, accessible mobile attack aim state */
+.coop-difficulty-label{display:inline-block;color:#dcbbe6;font:700 12px system-ui;margin-left:8px}
+#coopDifficulty{min-width:125px;border:1px solid #bf78b5;background:#211228;color:#fbe9ff}
+body.touch-ui #btnAttack.aim-stick{position:relative;outline:1px solid #79ccef;outline-offset:2px}
+body.touch-ui #btnAttack.aim-stick:after{content:'✚';font-size:11px;position:absolute;top:2px;right:5px;color:#afe8ff}
+@media (pointer:coarse) and (orientation:portrait){#coopHostOptions{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:5px}#coopHostOptions label{font-size:11px}#coopHostOptions select{max-width:100%;margin:3px}}
+.hero-grid{grid-template-columns:repeat(5,minmax(0,1fr));max-width:980px!important}.hero-choice .hero-portrait{height:155px!important;object-fit:cover}.hero-choice strong{font-size:16px}.hero-choice .weapon{font-size:9px!important}@media(max-width:650px){.hero-grid{grid-template-columns:repeat(3,minmax(0,1fr));}.hero-choice .hero-portrait{height:104px!important}.hero-choice strong{font-size:13px}}
+
+/* v2.8 — studio emblem intro; text/opacity only, preserves original art and combat */
+#studioIntro{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;overflow:hidden;background:#03030a;color:#e7e3ff;transition:opacity .65s ease,visibility .65s ease}
+#studioIntro.dismissed{opacity:0;visibility:hidden;pointer-events:none}
+#studioIntro .studio-art{position:absolute;inset:0;background:radial-gradient(ellipse at center,#07041a00 3%,#03020cc4 79%),url('assets/intro/moon_logo.jpg') center/contain no-repeat;opacity:0;animation:studioReveal 3.45s ease forwards}
+#studioIntro .studio-runes{position:absolute;left:50%;top:48%;width:min(75vmin,530px);height:min(75vmin,530px);transform:translate(-50%,-50%);animation:studioRing 5.2s linear infinite;pointer-events:none}
+#studioIntro .studio-runes span{position:absolute;left:50%;top:50%;font:clamp(17px,3.8vmin,29px) Georgia,serif;color:#bfddff;text-shadow:0 0 11px #6eafff,0 0 22px #e966ef;opacity:0;animation:studioRune .65s ease forwards;transform:rotate(var(--deg)) translateY(calc(-1 * min(32vmin,232px))) rotate(calc(-1 * var(--deg)))}
+#studioIntro .studio-credit{position:absolute;bottom:11%;left:0;width:100%;text-align:center;padding:0 18px;opacity:0;animation:studioCredit 1s ease 2.1s forwards;text-shadow:0 2px 11px #030009,0 0 21px #b984e9}
+#studioIntro .studio-credit strong{display:block;font:700 clamp(26px,5.4vw,51px) Georgia,serif;letter-spacing:.16em}
+#studioIntro .studio-credit small{display:block;font:600 clamp(13px,2.7vw,21px) system-ui;letter-spacing:.22em;margin-top:11px;color:#e9ccff}
+#studioSkip{position:absolute;right:14px;top:14px;font:600 12px system-ui;background:#140e25ce;color:#eee;border:1px solid #9b8abb;border-radius:6px;padding:9px 13px;z-index:2}
+@keyframes studioReveal{0%{opacity:0;transform:scale(1.12)}35%{opacity:.85}100%{opacity:1;transform:scale(1)}}
+@keyframes studioCredit{to{opacity:1}}
+@keyframes studioRune{to{opacity:.8}}
+@keyframes studioRing{to{transform:translate(-50%,-50%) rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){#studioIntro *,#studioIntro{animation:none!important}#studioIntro .studio-art,#studioIntro .studio-credit,#studioIntro .studio-runes span{opacity:1}}
+
+/* YGGDRASIL 2.9: illustrated power buttons, preserved legibility in portrait and landscape */
+#btnSkill,#btnSecondary,#btnUltimate{background-image:var(--skill-art,none)!important;background-size:70% 70%!important;background-position:center 32%!important;background-repeat:no-repeat!important;font-size:0!important;box-shadow:inset 0 0 0 2px #b88be399,0 0 12px #5a3b9366!important;position:relative;color:transparent!important}
+#btnSkill b,#btnSecondary b,#btnUltimate b{background:#110b20da;color:#f6e5ff;border-radius:8px;padding:2px 3px;font:800 8px/1.1 system-ui!important;position:absolute;bottom:2px;left:2px;right:2px;text-align:center;text-shadow:0 1px 2px #000;pointer-events:none}
+.cooldown-slot[id$="SkillSlot"],#cooldownSecondarySlot,#cooldownUltimateSlot{background-image:var(--skill-art,none);background-size:33px;background-repeat:no-repeat;background-position:5px center;padding-left:35px;min-height:46px}
+.cooldown-slot[id$="SkillSlot"] strong,#cooldownSecondarySlot strong,#cooldownUltimateSlot strong{text-shadow:0 2px 2px #070413;background:#171124aa}
+.hero-choice .hero-portrait{image-rendering:pixelated;box-shadow:0 5px 20px #0008,0 0 18px #7b4c8955;border-radius:4px}
+@media (pointer:coarse) and (orientation:portrait){#btnSkill,#btnSecondary,#btnUltimate{background-size:67% 65%!important}#btnSkill b,#btnSecondary b,#btnUltimate b{font-size:6px!important}.cooldown-slot[id$="SkillSlot"],#cooldownSecondarySlot,#cooldownUltimateSlot{min-height:34px;background-size:26px;padding-left:24px}}
+/* Runas nordicas — arte nova, separada do baralho japones. */
+.upgrade.nordic-card{border-color:#74d6ed;background:linear-gradient(165deg,#172b42,#0c1629 70%);box-shadow:inset 0 0 0 2px #2b5975,0 0 20px #67cfff22}
+.upgrade.nordic-card.legendary{border-color:#e8d9a4;background:linear-gradient(165deg,#3d3549,#101a32 70%)}
+.upgrade.nordic-card .iconbox{background:radial-gradient(ellipse at center,#2b658a7c,#101727 74%);border-color:#9de7ff55}
+.upgrade.nordic-card .card-art{image-rendering:auto;filter:drop-shadow(0 0 8px #83c6ff99)}
+</style>
+<style id="classic-skill-buttons-v31">
+/* Back to legible original sigils: no blurred thumbnails on ability buttons. */
+#btnSkill,#btnSecondary,#btnUltimate{background-image:none!important;font-size:25px!important;color:#ffe2ff!important;text-shadow:0 0 10px #a47acd!important;image-rendering:auto}
+#btnSkill b,#btnSecondary b,#btnUltimate b{background:#12091acc;color:#fbeaff;font-size:9px!important;border-radius:4px;padding:2px!important}
+.cooldown-slot[id$="SkillSlot"],#cooldownSecondarySlot,#cooldownUltimateSlot{background-image:none!important;padding-left:5px!important;min-height:35px}
+</style>
+
+<style>@media(max-width:600px){.coop-heroes{grid-template-columns:repeat(3,minmax(0,1fr));max-width:410px;gap:7px}.coop-heroes img{height:84px;object-position:center 16%}.coop-heroes b{font-size:10px;letter-spacing:.04em}}</style>
+<style id="selection-official-v36">
+.official-art-select{position:relative;width:min(98%,760px);margin:8px auto;border:2px solid #9673b6;border-radius:7px;overflow:hidden;aspect-ratio:1621/970;box-shadow:0 5px 25px #000a;background:#100b1c}
+.official-art-select .art-select-background{display:block;width:100%;height:100%;object-fit:fill;pointer-events:none;user-select:none}
+.official-art-select button.official-hero-target{position:absolute!important;left:var(--sl);top:var(--st);width:var(--sw);height:var(--sh);min-width:0!important;min-height:0!important;max-width:none!important;padding:0!important;margin:0!important;border:2px solid transparent!important;border-radius:6px;outline:0;background:transparent!important;box-shadow:none!important;opacity:1;cursor:pointer;color:transparent}
+.official-art-select button.official-hero-target:hover,.official-art-select button.official-hero-target:focus-visible{border-color:#f8dfa1!important;box-shadow:0 0 22px #b770e5aa,inset 0 0 4px 2px #dec2ff77!important;background:#c482ec24!important}
+.official-art-select button.official-hero-target.selected{border:3px solid #fff0ae!important;box-shadow:0 0 19px #f7e0ad99,inset 0 0 15px #ba71f47d!important;background:#c482ec22!important}
+.official-art-select button.official-hero-target:disabled{border-color:#7e5367!important;background:#09071988!important;cursor:not-allowed;opacity:.48!important}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:700px){.official-art-select{width:100%}}
+</style>
+<style id="nordic-character-selection-v37">
+/* v3.8 Individual, accessible, illustrated character selection instead of one stretched photo with invisible hitboxes */
+.new-hero-selector{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;width:min(100%,900px);margin:12px auto}
+.new-hero-tile{appearance:none;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;min-width:0;padding:5px 5px 10px;background:linear-gradient(160deg,#22162c,#101421)!important;border:1px solid #9369bd!important;border-radius:8px;box-shadow:inset 0 0 0 1px #392548,0 5px 12px #08061477;cursor:pointer;color:#fff5de;transition:transform .13s,box-shadow .13s,border-color .13s}
+.new-hero-tile:hover,.new-hero-tile:focus-visible{transform:translateY(-4px);border-color:#f3dcad!important;box-shadow:0 0 14px #b087eaaa;outline:2px solid transparent}
+.new-hero-tile.selected{border:2px solid #a1ecfc!important;box-shadow:0 0 20px #b4eaff99;transform:translateY(-3px)}
+.new-hero-tile:disabled{filter:grayscale(.8);opacity:.4;cursor:not-allowed;transform:none}
+.hero-art-wrap{display:block;position:relative;overflow:hidden;width:100%;height:155px;border-radius:4px;background:#0e1220}
+.hero-art-wrap img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 37%;image-rendering:auto;filter:contrast(1.05) saturate(1.06)}
+.hero-art-wrap:after{content:'✦';position:absolute;bottom:5px;right:7px;color:#ffe8b8;text-shadow:0 0 7px #8b62d9;font-size:12px}
+.new-hero-tile strong{margin-top:7px;font:700 clamp(10px,1.9vw,15px) Georgia,serif;letter-spacing:.08em}
+.new-hero-tile small{margin-top:3px;font:600 clamp(8px,1.05vw,10px) system-ui;color:#becee4;white-space:normal}
+@media(max-width:600px){.new-hero-selector{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.hero-art-wrap{height:110px}.new-hero-tile{padding:4px}.new-hero-tile strong{font-size:11px}.new-hero-tile small{font-size:8px}}
+@media (pointer:coarse) and (orientation:landscape){.new-hero-selector{grid-template-columns:repeat(5,minmax(0,1fr));gap:4px}.hero-art-wrap{height:68px}.new-hero-tile strong{font-size:9px}.new-hero-tile small{font-size:7px}}
+#nordicRealmBtn{border-color:#97d6fa;color:#d7f4ff;background:linear-gradient(115deg,#0b2d47,#273f59)}
+</style>
+<style id="world-campaign-v38">
+/* v3.8: independent campaigns and properly centered illustrated cards */
+.world-screen{background:radial-gradient(circle at 50% 12%,#302242d6,#080a18f0 76%),url('assets/ui/selection_back.webp') center/cover no-repeat}
+.world-panel{width:min(100%,850px)!important;max-width:850px!important}
+.world-panel .intro{max-width:680px;margin:12px auto 17px}
+.world-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;max-width:790px;margin:0 auto}
+.world-tile{border:2px solid #a781bb;color:#ffe9d5;background:#0e1220;display:flex;flex-direction:column;gap:8px;padding:10px;cursor:pointer;border-radius:10px;box-shadow:0 12px 28px #000a;min-width:0;transition:transform .16s,border-color .16s}
+.world-tile:hover,.world-tile:focus-visible{border-color:#f2dcac;transform:translateY(-3px)}
+.world-tile img{display:block;width:100%;height:160px;object-fit:cover;object-position:center center;border-radius:6px}
+.world-tile.nordic{border-color:#70bce8}.world-tile.nordic strong{color:#a5ebff}
+.world-tile strong{font:bold clamp(15px,2vw,22px) Georgia,serif}.world-tile span{font:700 11px/1.5 system-ui;color:#c5c7df}
+.hero-art-wrap{height:155px;display:flex;align-items:center;justify-content:center}
+.hero-art-wrap img{width:100%;height:100%;display:block;object-fit:cover;object-position:50% 35%;margin:0 auto}
+.new-hero-tile{overflow:hidden;text-align:center;justify-content:flex-start}
+.new-hero-tile strong,.new-hero-tile small{text-align:center;width:100%}
+.boss-grid-new{grid-template-columns:repeat(5,minmax(0,1fr));gap:9px}
+.boss-tile img{width:100%;height:140px;object-fit:cover;object-position:center}
+.boss-tile[data-boss="samurai"]{border-color:#e37a84;background:linear-gradient(#3b1727,#120a16)}
+.boss-tile[data-boss="frostjarl"]{border-color:#78daff;background:linear-gradient(#153247,#0c121f)}
+.boss-tile[data-boss="frostjarl"] strong{color:#a9eeff}
+@media(max-width:650px){.world-grid{grid-template-columns:1fr;gap:9px}.world-tile img{height:105px}.world-panel .intro{margin:7px auto}.boss-grid-new{grid-template-columns:repeat(2,minmax(0,1fr))}.boss-tile img{height:106px}}
+@media(pointer:coarse) and (orientation:landscape){.world-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.world-tile img{height:78px}.world-tile{padding:5px;gap:3px}.world-tile span{font-size:9px}.hero-art-wrap{height:80px}.boss-grid-new{grid-template-columns:repeat(5,minmax(0,1fr))}.boss-tile img{height:70px}}
+</style>
+</head>
+<body><div id="studioIntro" aria-label="Abertura Yggdrasil — A Game by Davis" role="region"><div class="studio-art"></div><div class="studio-runes" aria-hidden="true"><span style="--deg:0deg;animation-delay:0.30s">ᚠ</span><span style="--deg:45deg;animation-delay:0.48s">ᚢ</span><span style="--deg:90deg;animation-delay:0.66s">ᚦ</span><span style="--deg:135deg;animation-delay:0.84s">ᚨ</span><span style="--deg:180deg;animation-delay:1.02s">ᚱ</span><span style="--deg:225deg;animation-delay:1.20s">ᚲ</span><span style="--deg:270deg;animation-delay:1.38s">ᚷ</span><span style="--deg:315deg;animation-delay:1.56s">ᚹ</span></div><div class="studio-credit"><strong>YGGDRASIL</strong><small>A GAME BY DAVIS</small></div><button id="studioSkip" type="button">PULAR INTRO ↠</button></div><div id="shell">
+<header class="mast"><div class="brand"><div class="sigil"><svg viewBox="0 0 40 44"><path d="M20 3V27M20 12L7 5M20 14L34 5M20 20L5 16M20 19L36 16M20 27L12 38M20 27L27 39M20 27L19 41M7 5L3 13M34 5L36 12"/></svg></div><div><h1>YGGDRASIL</h1><p>As sete raízes · A ascensão</p></div></div><div class="toptools"><span class="version">XANS · CORRUPÇÃO · V3.8 · REINOS SEPARADOS</span><div class="audio-tools" role="group" aria-label="Controles de áudio"><button class="smallbtn" id="toggleAudio" aria-pressed="true">🔊 SOM LIGADO</button><input id="audioVolume" type="range" min="0" max="100" value="67" aria-label="Volume do jogo"><button class="smallbtn" id="audioTest">♫ TESTAR SOM</button></div><button class="smallbtn" id="openSettings">⚙ CONTROLES</button><button class="smallbtn" id="restart">↻ Reiniciar</button></div></header>
+<div class="frame"><div class="scene" id="scene"><canvas id="game" width="960" height="576" aria-label="Arena de combate top-down do jogo Yggdrasil"></canvas>
+<div class="hud" id="hud" style="display:none"><div class="statpanel"><div class="pname" id="playerName">LOID</div><div class="bar"><div class="fill hp" id="hpFill" style="width:100%"></div><div class="barnum" id="hpText">110 / 110</div></div><div class="bar"><div class="fill power" id="powerFill" style="width:100%"></div><div class="barnum" id="powerText">HABILIDADE PRONTA</div></div><div class="bar ult-bar"><div class="fill ultimate-fill" id="ultimateFill" style="width:100%"></div><div class="barnum" id="ultimateText">R · CARGA 0%</div></div><div class="cooldown-strip" aria-label="Tempos de recarga dos poderes">
+ <div class="cooldown-slot" id="cooldownDashSlot"><span class="ability-key">ESPAÇO</span><strong id="cooldownDash">PRONTO</strong><small>DASH</small></div>
+ <div class="cooldown-slot" id="cooldownSkillSlot"><span class="ability-key">Q</span><strong id="cooldownSkill">PRONTO</strong><small>PODER</small></div>
+ <div class="cooldown-slot" id="cooldownSecondarySlot"><span class="ability-key">E</span><strong id="cooldownSecondary">PRONTO</strong><small id="secondaryName">SOMBRAS</small></div>
+ <div class="cooldown-slot" id="cooldownUltimateSlot"><span class="ability-key">R</span><strong id="cooldownUltimate">0%</strong><small>SUPREMO</small></div>
+ </div></div><div class="statpanel wavepanel"><div id="performanceMeter" style="font:700 10px system-ui;color:#afefc3;text-align:right;margin-bottom:3px">FPS -- · REDE OFFLINE</div><div class="stage" id="stageText">FASE 01</div><div class="sub" id="themeText">RAIZ DA MEMÓRIA</div><div class="score" id="counterText">INIMIGOS 0 · ESSÊNCIA 0</div></div></div>
+<div class="mobile-controls" id="mobileControls" style="display:none"><div class="joystick" id="joystick"><div class="knob" id="knob"></div></div><div class="actions"><button class="action" id="btnDash" aria-label="Esquivar">↝<b>ESQUIVA</b></button><button class="action" id="btnSkill" aria-label="Usar poder Q">✦<b>PODER Q</b></button><button class="action secondary-action" id="btnSecondary" aria-label="Usar segundo poder E">✧<b>SOMBRAS E</b></button><button class="action ultimate-action" id="btnUltimate" aria-label="Usar Supremo R">✺<b>SUPREMO</b></button><button class="action card-power" id="btnCardPower" aria-label="Usar poder exclusivo da carta" style="display:none">✹<b>CARTA F</b></button><button class="action attack" id="btnAttack" aria-label="Atacar">⚔<b>ATACAR</b></button></div></div>
+<div class="overlay splash" id="titleScreen" role="region" aria-label="Tela inicial de Yggdrasil"><div class="splash-actions"><div class="splash-kicker">◆ AS SETE RAÍZES ◆</div><button id="titleStart" class="splash-btn">INICIAR A JORNADA</button><button id="titleSelect" class="splash-btn secondary">TESTAR CHEFES</button><button id="nordicRealmBtn" class="splash-btn secondary">❄ ACESSO RÁPIDO · REINO NÓRDICO</button><button id="titleOnline" class="splash-btn secondary" style="border-color:#70a0d0">ONLINE COOPERATIVO · ATÉ 5</button><a href="duel.html" class="splash-btn secondary" style="display:block;text-decoration:none;border-color:#e9a5be;background:#3d213c;color:#fff1e0">⚔ X1 ONLINE · LUTAR OU ASSISTIR</a><div class="mode-buttons"><button type="button" data-mode="normal" class="selected">✦ MODO NORMAL</button><button type="button" data-mode="pecador">☠ MODO PECADOR</button></div><small>Pixel art · Japão e Reino Nórdico · Cinco protagonistas</small><small id="audioStatus">Trilhas: SEKIRO na abertura · 8-BIT JAPANESE nas ondas · Peccatum apenas no Pecado da onda 20.</small></div></div>
+
+<div class="overlay hidden world-screen" id="worldScreen" role="region" aria-label="Escolha entre Japão e Reino Nórdico"><div class="overlay-card world-panel">
+  <div class="eyebrow">◆ DOIS REINOS · DUAS JORNADAS ◆</div>
+  <h2>ESCOLHA SEU MUNDO</h2>
+  <p class="intro">Cada mapa tem sua própria campanha. Japão e Reino Nórdico começam separadamente; completar um não inicia o outro.</p>
+  <div class="world-grid">
+   <button id="worldJapan" class="world-tile japan" type="button"><img src="assets/japanese_arena.webp" alt="Arena das batalhas do Japão"><strong>⛩ JAPÃO</strong><span>20 ondas · Oni, Reuni, Tsukuomi e Pecado</span></button>
+   <button id="worldNordic" class="world-tile nordic" type="button"><img src="assets/nordic/frozen_arena.webp" alt="Arena gelada do Reino Nórdico"><strong>❄ REINO NÓRDICO</strong><span>5 ondas · Draugrs, lobos e Jarl do Gelo</span></button>
+  </div>
+  <button id="worldBack" class="selection-back" type="button">← VOLTAR AO MENU</button>
+</div></div>
+<div class="overlay hidden coop-screen" id="coopScreen" role="region" aria-label="Sala online cooperativa"><div class="overlay-card coop-panel">
+  <div class="eyebrow">◆ YGGDRASIL ONLINE ◆</div><h2>COOPERATIVO · ATÉ 5 JOGADORES</h2>
+  <p class="intro">Crie uma sala e compartilhe o código. Um jogador hospeda a batalha; até quatro amigos entram pelo mesmo link.</p>
+  <div id="coopConnect"><button class="restart-btn" id="coopCreate">CRIAR SALA</button>
+    <div style="margin:12px auto"><input id="coopCode" maxlength="6" autocomplete="off" placeholder="CÓDIGO DA SALA" aria-label="Código da sala" style="padding:12px;background:#161021;color:white;border:1px solid #8f70ae;max-width:190px;text-transform:uppercase"><button class="restart-btn" id="coopJoin">ENTRAR</button></div></div>
+  <div id="coopLobby" hidden><div class="coop-code">SALA <strong id="coopRoomCode">------</strong> <button type="button" id="coopCopy">COPIAR CÓDIGO</button></div>
+   <p id="coopPeople" class="intro"></p><p class="intro">Escolha seu personagem:</p>
+   <div class="new-hero-selector coop" aria-label="Escolha interativa de personagem"><button type="button" class="new-hero-tile" data-coop-hero="loid" aria-label="Escolher LOID" title="LOID"><span class="hero-art-wrap"><img src="assets/ui/loid_portrait_v38.webp?v=38" alt="Retrato em pixel art de LOID" loading="lazy"></span><strong>LOID</strong><small>ADAGA · SOMBRAS</small></button><button type="button" class="new-hero-tile" data-coop-hero="kris" aria-label="Escolher KRIS" title="KRIS"><span class="hero-art-wrap"><img src="assets/ui/kris_portrait_v38.webp?v=38" alt="Retrato em pixel art de KRIS" loading="lazy"></span><strong>KRIS</strong><small>ESPADA NEGRA</small></button><button type="button" class="new-hero-tile" data-coop-hero="cross" aria-label="Escolher XANS" title="XANS"><span class="hero-art-wrap"><img src="assets/ui/cross_portrait_v38.webp?v=38" alt="Retrato em pixel art de XANS" loading="lazy"></span><strong>XANS</strong><small>ESQUELETO · CORRUPÇÃO</small></button><button type="button" class="new-hero-tile" data-coop-hero="eve" aria-label="Escolher EVE LOREY" title="EVE LOREY"><span class="hero-art-wrap"><img src="assets/ui/eve_portrait_v38.webp?v=38" alt="Retrato em pixel art de EVE LOREY" loading="lazy"></span><strong>EVE LOREY</strong><small>ESPADA DO VAZIO</small></button><button type="button" class="new-hero-tile" data-coop-hero="kali" aria-label="Escolher KALI" title="KALI"><span class="hero-art-wrap"><img src="assets/ui/kali_portrait_v38.webp?v=38" alt="Retrato em pixel art de KALI" loading="lazy"></span><strong>KALI</strong><small>ESPELHO · ILUSÕES</small></button></div>
+   <div id="coopHostOptions" hidden><label for="coopBoss">Modo da partida: </label><select id="coopBoss"><option value="japan">⛩ Jornada Japão · 20 ondas</option><option value="nordic">❄ Jornada Reino Nórdico · 5 ondas</option><option value="samurai">Teste Samurai · onda 5</option><option value="reuni">Teste Reuni · onda 10</option><option value="tsukuomi">Teste Tsukuomi · onda 15</option><option value="pecado">Teste Pecado · onda 20</option><option value="nordic">❄ Testar Reino Nórdico · onda 21</option><option value="frostjarl">❄ Jarl do Gelo · onda 25</option></select><label for="coopDifficulty" class="coop-difficulty-label"> Dificuldade: </label><select id="coopDifficulty" aria-label="Dificuldade online"><option value="normal">✦ Normal</option><option value="pecador">☠ Pecador</option></select><button class="restart-btn" id="coopBegin" disabled>INICIAR PARTIDA</button></div>
+   <p class="intro" id="coopNotice">Escolha um personagem.</p></div>
+   <button type="button" class="selection-back" id="coopBack">← VOLTAR</button></div></div>
+<div class="overlay hidden select-screen" id="selectScreen"><div class="overlay-card"><div class="eyebrow">◆ ESCOLHA SEU DESTINO ◆</div><h2 id="selectionTitle">ESCOLHA SEU HERÓI</h2><div class="mode-buttons mode-select"><button type="button" data-mode="normal" class="selected">✦ NORMAL</button><button type="button" data-mode="pecador">☠ PECADOR</button></div><p class="intro" id="selectionIntro">Escolha um dos cinco protagonistas para sua jornada.</p><div class="new-hero-selector solo" aria-label="Escolha interativa de personagem"><button type="button" class="new-hero-tile" id="chooseLoid" aria-label="Escolher LOID" title="LOID"><span class="hero-art-wrap"><img src="assets/ui/loid_portrait_v38.webp?v=38" alt="Retrato em pixel art de LOID" loading="lazy"></span><strong>LOID</strong><small>ADAGA · SOMBRAS</small></button><button type="button" class="new-hero-tile" id="chooseKris" aria-label="Escolher KRIS" title="KRIS"><span class="hero-art-wrap"><img src="assets/ui/kris_portrait_v38.webp?v=38" alt="Retrato em pixel art de KRIS" loading="lazy"></span><strong>KRIS</strong><small>ESPADA NEGRA</small></button><button type="button" class="new-hero-tile" id="chooseCross" aria-label="Escolher XANS" title="XANS"><span class="hero-art-wrap"><img src="assets/ui/cross_portrait_v38.webp?v=38" alt="Retrato em pixel art de XANS" loading="lazy"></span><strong>XANS</strong><small>ESQUELETO · CORRUPÇÃO</small></button><button type="button" class="new-hero-tile" id="chooseEve" aria-label="Escolher EVE LOREY" title="EVE LOREY"><span class="hero-art-wrap"><img src="assets/ui/eve_portrait_v38.webp?v=38" alt="Retrato em pixel art de EVE LOREY" loading="lazy"></span><strong>EVE LOREY</strong><small>ESPADA DO VAZIO</small></button><button type="button" class="new-hero-tile" id="chooseKali" aria-label="Escolher KALI" title="KALI"><span class="hero-art-wrap"><img src="assets/ui/kali_portrait_v38.webp?v=38" alt="Retrato em pixel art de KALI" loading="lazy"></span><strong>KALI</strong><small>ESPELHO · ILUSÕES</small></button></div><div class="panelnote">Escolha um protagonista para iniciar a jornada ou enfrentar o chefe selecionado.</div><button type="button" class="selection-back" id="selectionBack">← VOLTAR</button></div></div>
+<div class="overlay hidden boss-screen" id="bossScreen" role="region" aria-label="Escolha de chefes">
+ <div class="overlay-card boss-panel"><div class="eyebrow">⚔ MODO DE TESTE · CHEFES</div><h2>ESCOLHA O CHEFE</h2>
+ <p class="intro">Selecione a batalha. Na próxima tela, escolha um dos cinco personagens.</p>
+ <div class="boss-grid-new">
+ <button class="boss-tile" data-boss="samurai"><img src="assets/ui/samurai_boss_v38.webp?v=38" alt="Daimyō Oni — guerreiro oni de armadura rubra"><strong>DAIMYŌ ONI</strong><span>ONDA 05</span></button>
+ <button class="boss-tile" data-boss="reuni"><img src="assets/enemies/reuni_sheet.png" alt="Reuni"><strong>REUNI</strong><span>ONDA 10</span></button>
+ <button class="boss-tile" data-boss="tsukuomi"><img src="assets/ui/tsukuomi_portrait.webp" alt="Tsukuomi"><strong>TSUKUOMI</strong><span>ONDA 15</span></button>
+ <button class="boss-tile" data-boss="pecado"><img src="assets/ui/pecado_portrait.webp" alt="Pecado"><strong>PECADO</strong><span>ONDA 20</span></button><button class="boss-tile" data-boss="frostjarl"><img src="assets/nordic/jarl_boss_v38.webp?v=38" alt="Jarl do Gelo"><strong>JARL DO GELO</strong><span>NÓRDICO · ONDA 25</span></button>
+ </div><button id="bossBack" class="selection-back">← VOLTAR À ABERTURA</button>
+ </div></div>
+<div class="overlay hidden" id="waitingCards" style="z-index:15;background:#080712ed"><div class="overlay-card"><div class="eyebrow">◆ ONDA CONCLUÍDA ◆</div><h2>AGUARDANDO JOGADORES</h2><p class="intro" id="waitingProgress">0 / 5 jogadores escolheram</p><p class="panelnote">A próxima onda começa quando todos escolherem sua carta.</p></div></div>
+<div class="overlay hidden fallen-toast" id="fallenScreen" role="status" aria-live="polite"><div class="fallen-note"><strong>✦ FANTASMA ✦</strong><span>Continue explorando! Monstros ignoram você. Volta na próxima onda.</span></div></div>
+<div class="overlay hidden" id="rewardScreen"><div class="overlay-card reward-panel"><div class="eyebrow" id="rewardSubtitle">◆ FASE CONCLUÍDA ◆</div><h2>ESCOLHA SUA EVOLUÇÃO</h2><p class="intro">Uma carta será incorporada ao seu poder até o fim desta partida.</p><div class="reward-grid" id="rewardGrid"></div><div class="panelnote">Clique na carta ou use <span class="accent">1</span>, <span class="accent">2</span>, <span class="accent">3</span>.</div></div></div>
+<div class="overlay hidden supreme-screen" id="supremeScreen" role="dialog" aria-modal="true" aria-labelledby="supremeTitle"><div class="overlay-card supreme-panel"><div class="eyebrow">◆ SUPREMO DO KRIS ◆</div><h2 id="supremeTitle">ESCOLHA SEU PODER</h2><p class="intro">A Espada Negra responde à sua vontade. Escolha um dos quatro efeitos.</p><div class="supreme-grid">
+<button class="supreme-choice fight" data-supreme="fight"><span class="supreme-icon">⚔</span><strong>1 · FIGHT</strong><span>+100% de dano nos ataques básicos durante 9 segundos.</span></button>
+<button class="supreme-choice defense" data-supreme="defesa"><span class="supreme-icon">◈</span><strong>2 · DEFESA</strong><span>Fica imune a todo dano durante 3 segundos.</span></button>
+<button class="supreme-choice items" data-supreme="itens"><span class="supreme-icon">⚔⚔</span><strong>3 · ITENS</strong><span>Duas espadas negras: golpes duplos durante 11 segundos.</span></button>
+<button class="supreme-choice mercy" data-supreme="piedade"><span class="supreme-icon">✚</span><strong>4 · PIEDADE</strong><span>Recupera toda a vida e corre 50% mais rápido por 9 segundos.</span></button>
+</div><div class="panelnote">Escolha uma carta ou aperte 1, 2, 3 ou 4. O combate fica pausado durante a escolha.</div></div></div>
+<div class="overlay hidden" id="settingsScreen" style="z-index:40;background:#080711ed"><div class="overlay-card" style="max-width:390px"><h2>CONTROLES E DESEMPENHO</h2><p class="intro">Automático detecta quedas de FPS e reduz efeitos da aura/supremo do Loid somente quando necessário. Modo Desempenho economiza ainda mais bateria e processamento sem mudar o dano.</p><label style="display:block;margin:12px">Tamanho dos botões <input type="range" id="sizeControl" min="75" max="145" value="100" style="width:100%"></label><label style="display:block;margin:12px"><input type="checkbox" id="stickControl"> <span id="attackModeLabel">BOTÃO DE ATAQUE</span> (arraste para mirar)</label><label style="display:block;margin:12px"><input type="checkbox" id="assistControl" checked> <span>Auxílio de mira no celular</span> — toque para acertar o inimigo mais próximo; poderes priorizam o mais forte</label><label style="display:block;margin:12px">Renderização <select id="renderControl"><option value="auto">Automática · adapta ao celular (recomendado)</option><option value="leve">Leve</option><option value="desempenho">Modo Desempenho · menos efeitos e resolução reduzida</option><option value="qualidade">Alta nitidez</option></select></label><button class="restart-btn" id="closeSettings">FECHAR</button></div></div>
+<div class="overlay hidden" id="gameOverScreen"><div class="overlay-card"><div class="eyebrow">◆ O ciclo recomeça ◆</div><h2 id="endTitle">A RAIZ RESISTE</h2><p class="intro" id="endText"></p><button class="restart-btn" id="retry">TENTAR NOVAMENTE / MESMA SALA</button></div></div>
+</div></div>
+<footer class="bottom"><div class="instructions">MOVER <span class="key">WASD</span> ou <span class="key">↑←↓→</span> &nbsp; ATACAR <span class="key">J</span> / <span class="key">CLIQUE</span> &nbsp; ESQUIVAR <span class="key">ESPAÇO</span> &nbsp; PODER <span class="key">Q</span> &nbsp; SEGUNDO PODER <span class="key">E</span> (KRIS: SEGURAR) &nbsp; SUPREMO <span class="key">R</span> &nbsp; CARTA ESPECIAL <span class="key">F</span> &nbsp; CARTAS <span class="key">1–3</span></div><div class="tip">Santuário HD · Tsukuomi 15 · Pecado 20 · Carta do Sapo · Cura rara · Modo Pecador.</div></footer>
+</div>
+
+<script>
+(function(){
+ const intro=document.getElementById('studioIntro');
+ const hide=()=>{if(!intro||intro.classList.contains('dismissed'))return;intro.classList.add('dismissed');setTimeout(()=>intro.remove(),800)};
+ document.getElementById('studioSkip')?.addEventListener('click',hide);
+ const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+ setTimeout(hide,reduced?1300:5100);
+})();
+</script>
+<script src="audio.js?v=40"></script><script src="game.js?v=40"></script></body></html>
+
+

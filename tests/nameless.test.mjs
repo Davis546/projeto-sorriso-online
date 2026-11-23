@@ -1,0 +1,23 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+import vm from 'node:vm';
+const noop=()=>{};const els=new Map();
+const cx=new Proxy({}, {get(t,k){return t[k]||noop},set(t,k,v){t[k]=v;return true}});
+function el(id){if(!els.has(id))els.set(id,{id,style:{setProperty:noop},classList:{add:noop,remove:noop,toggle:noop,contains:()=>false},dataset:{},value:'normal',textContent:'',innerHTML:'',hidden:false,addEventListener:noop,querySelector:()=>el('child'),getContext:()=>cx,getBoundingClientRect:()=>({width:480,height:288,left:0,top:0}),setPointerCapture:noop});return els.get(id)}
+const sandbox={window:{innerWidth:1280,innerHeight:720,matchMedia:()=>({matches:false}),addEventListener:noop},navigator:{maxTouchPoints:0,userAgent:'Desktop'},document:{body:el('body'),documentElement:el('html'),getElementById:el,querySelectorAll:()=>[],querySelector:()=>el('query'),createElement:()=>el('created'),addEventListener:noop},Image:class{complete=true;naturalWidth=512;naturalHeight=512;set src(v){this._src=v}get src(){return this._src}},performance:{now:()=>1000},requestAnimationFrame:noop,localStorage:{getItem:()=>null,setItem:noop},YG_AUDIO:{play:noop,syncMusic:noop},console,Math,Date,Map,Set,WebSocket:class{},setTimeout:noop,clearTimeout:noop,screen:{orientation:{}},location:{protocol:'https:',host:'test.workers.dev'}};
+vm.createContext(sandbox);vm.runInContext(fs.readFileSync(new URL('../public/game.js',import.meta.url),'utf8'),sandbox);
+const run=s=>vm.runInContext(s,sandbox,{timeout:7000});
+run("selectedCampaign='nordic';start('loid','nameless');player.hp=100000;player.maxHp=100000;");
+assert.equal(run('stage'),35);assert.equal(run('activeCampaign'),'nordic');assert.equal(run("enemies.filter(e=>e.type==='nameless').length"),1);
+assert.equal(run('isCampaignFinalWave()'),true);
+run("{let boss=enemies.find(e=>e.type==='nameless');boss.hp=boss.maxHp*.5;update(.016)}");
+assert.equal(run("enemies.find(e=>e.type==='nameless').rage"),true);
+assert.equal(run("enemies.filter(e=>e.type==='runeSeal').length"),3);
+run('for(let i=0;i<850;i++)update(.016)');
+assert.ok(run("enemies.find(e=>e.type==='nameless').specialIndex")>0,'No boss attack sequence');
+assert.ok(fs.statSync(new URL('../public/assets/nordic/nameless_knight.png',import.meta.url)).size>30000);
+assert.ok(fs.statSync(new URL('../public/assets/nordic/ancient_dragon.png',import.meta.url)).size>30000);
+assert.ok(fs.statSync(new URL('../public/assets/audio/nameless_ost.mp3',import.meta.url)).size>200000);
+run("stage=15;activeCampaign='japan';spawnStage()");
+assert.ok(run("enemies.some(e=>e.type==='tsukuomi')"),'Japan Tsukuyomi removed');
+console.log('NORDIC WAVE 15: KNIGHT, DRAGON, SEALS, PHASE TRANSITION, JAPAN PRESERVED PASS');

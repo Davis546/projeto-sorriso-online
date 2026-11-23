@@ -1,0 +1,21 @@
+{
+  "name": "yggdrasil-online-cloudflare",
+  "version": "4.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "test:protocol": "npm run test:server",
+    "deploy": "wrangler deploy",
+    "test:server": "node tests/authoritative.test.mjs && node tests/network-server.test.mjs",
+    "test:nordic": "node tests/nordic.test.mjs",
+    "test:campaign": "node tests/campaign.test.mjs",
+    "test:bosses": "node tests/boss-render.test.mjs",
+    "test:music": "node tests/music.test.mjs",
+    "test:cards": "node tests/nordic-cards.test.mjs",
+    "test:nameless": "node tests/nameless.test.mjs"
+  },
+  "devDependencies": {
+    "wrangler": "^4.50.0"
+  }
+}

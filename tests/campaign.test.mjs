@@ -1,0 +1,20 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+import vm from 'node:vm';
+const noop=()=>{};const elements=new Map();
+function el(id){if(!elements.has(id))elements.set(id,{id,style:{setProperty:noop},classList:{add:noop,remove:noop,toggle:noop,contains:()=>false},dataset:{},value:'normal',textContent:'',hidden:false,innerHTML:'',addEventListener:noop,querySelector:()=>el('child'),getContext:()=>new Proxy({}, {get:()=>noop}),getBoundingClientRect:()=>({width:480,height:288,left:0,top:0})});return elements.get(id);}
+const context={window:{innerWidth:1280,innerHeight:720,matchMedia:()=>({matches:false}),addEventListener:noop},navigator:{maxTouchPoints:0,userAgent:'Desktop'},document:{body:el('body'),documentElement:el('html'),getElementById:el,querySelectorAll:()=>[],querySelector:()=>el('query'),createElement:()=>el('created'),addEventListener:noop}, Image:class{complete=true;naturalWidth=448;naturalHeight=448;set src(v){this._src=v}get src(){return this._src}},performance:{now:()=>1000},requestAnimationFrame:noop,localStorage:{getItem:()=>null,setItem:noop},YG_AUDIO:{play:noop,syncMusic:noop},console,Math,Date,Map,Set,WebSocket:class{},location:{protocol:'https:',host:'local.test'},setTimeout:noop,clearTimeout:noop};
+vm.createContext(context);vm.runInContext(fs.readFileSync(new URL('../public/game.js',import.meta.url),'utf8'),context,{timeout:5000});
+const check=expression=>vm.runInContext(expression,context);
+check("selectedCampaign='japan';start('loid');");assert.equal(check('stage'),1);assert.equal(check('activeCampaign'),'japan');
+check('stage=20');assert.equal(check('isCampaignFinalWave()'),true);
+check("selectedCampaign='nordic';start('kris');");assert.equal(check('stage'),21);assert.equal(check('activeCampaign'),'nordic');
+check('stage=25');assert.equal(check('isCampaignFinalWave()'),false);check('stage=35');assert.equal(check('isCampaignFinalWave()'),true);
+check("selectedCampaign='japan';start('eve','nordic');");assert.equal(check('stage'),21);assert.equal(check('testBossMode'),false);
+check("start('eve','frostjarl');");assert.equal(check('stage'),25);assert.equal(check('testBossMode'),true);
+check("start('eve','nameless');");assert.equal(check('stage'),35);assert.equal(check('activeCampaign'),'nordic');
+assert.match(fs.readFileSync(new URL('../public/index.html',import.meta.url),'utf8'),/id="worldScreen"/);
+assert.match(fs.readFileSync(new URL('../public/index.html',import.meta.url),'utf8'),/value="nordic">❄ Jornada Reino Nórdico/);
+assert.match(fs.readFileSync(new URL('../src/worker.mjs',import.meta.url),'utf8'),/\['japan', 'samurai'/);
+assert.match(fs.readFileSync(new URL('../public/game.js',import.meta.url),'utf8'),/isBossEnemy\(e\)\?4\.5:3\.0/);
+console.log('CAMPAIGNS, ONLINE WORLD SELECTION, EVE CHARGE PASS');
